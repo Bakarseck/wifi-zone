@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { use } from "react";
 
 export async function POST(req) {
   const body = await req.json();
@@ -34,11 +35,12 @@ export async function POST(req) {
       });
     }
 
+
     // Generate JWT Token
     const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email, firstName: user.firstName, lastName : user.lastName },
         process.env.JWT_SECRET,            
-        { expiresIn: "1h" }                
+        { expiresIn: "4h" }                
     );
 
     // If successful, return user data (excluding sensitive fields like password)

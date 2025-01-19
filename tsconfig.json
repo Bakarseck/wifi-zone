@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "hooks/use-auth.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "hooks/use-auth.js", "app/dashboard/page.jsx", "app/dashboard/wifi-zones/page.jsx"],
   "exclude": ["node_modules"]
 }
