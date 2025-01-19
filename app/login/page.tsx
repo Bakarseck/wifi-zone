@@ -1,55 +1,44 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setIsLoading(true)
-  
-    const formData = new FormData(event.currentTarget)
-    const email = formData.get("email") as string
-    const password = formData.get("password") as string
-  
-    // Send login data to the backend
+    event.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
     try {
-      const response = await fetch("/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      })
-  
-      if (!response.ok) {
-        const errorData = await response.json()
-        alert(errorData.error || "Erreur lors de la connexion.")
-        setIsLoading(false)
-        return
-      }
-  
-      const data = await response.json()
-      alert("Connexion réussie.")
-      router.push("/dashboard")
+      await login(email, password); // Use the `login` method from `useAuth`
+      alert("Connexion réussie.");
+      router.push("/dashboard");
     } catch (error) {
-      console.error("Error during login:", error)
-      alert("Une erreur inattendue est survenue.")
+      console.error("Error during login:", error);
+      alert("Erreur lors de la connexion. Vérifiez vos identifiants.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }  
+  }
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center">
@@ -83,6 +72,5 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
-

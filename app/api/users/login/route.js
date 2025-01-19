@@ -48,6 +48,7 @@ export async function POST(req) {
       JSON.stringify({
         message: "Login successful",
         user: { id, firstName, lastName, email: userEmail, phone },
+        token
       }),
       { status: 200 }
     );
